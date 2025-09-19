@@ -76,17 +76,6 @@ npm run test
 - `edge` - Desktop Edge
 - `all` - Run tests on all browsers
 
-### Detailed Commands:
-
-# Using environment variables (recommended)
-BROWSER=firefox npx playwright test registration.spec.ts
-BROWSER=webkit npx playwright test registration.spec.ts
-```
-
-#### Run with debug mode:
-```bash
-npx playwright test registration.spec.ts --debug
-```
 
 ## Page Object Model Implementation
 
