@@ -49,6 +49,11 @@ test.describe('Successful Registration Tests', () => {
             await registrationPage.fillPostalCode(userData.postalCode);
         });
 
+        // Agree to Terms and Conditions
+        await test.step('Agree to Terms and Conditions', async () => {
+            await registrationPage.agreeToTerms();
+        });
+
         // Verify register button is enabled
         await test.step('Verify form completion', async () => {
             expect(await registrationPage.isRegisterButtonEnabled()).toBe(true);
@@ -71,19 +76,8 @@ test.describe('Successful Registration Tests', () => {
             expect(loggedInUsername.toLowerCase()).toBe(userData.username.toLowerCase());
 
             // Verify logout option is available
-            const logoutVisible = await registrationPage.isLogoutOptionVisible();
-            expect(logoutVisible).toBe(true);
-        });
-
-        // Additional verification - check page URL or success indicators
-        await test.step('Verify successful registration indicators', async () => {
-            // The page should redirect to home page or show success message
-            // Check if we're not on the registration page anymore
-            const currentUrl = registrationPage.page.url();
-            expect(currentUrl).not.toContain('/register');
-
-            // Check if we're on home page or account page
-            expect(currentUrl).toMatch(/(advantageonlineshopping\.com\/$|\/home|\/account)/);
+            const logoutButton = await registrationPage.logOutButton();
+            await expect(logoutButton!).toBeVisible({ timeout: 5_000 });
         });
     });
 

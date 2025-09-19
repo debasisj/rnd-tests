@@ -23,10 +23,22 @@ export interface RegistrationData {
 }
 
 export class TestDataFactory {
+    static generateUniqueUsername(): string {
+        // Generate a unique username within 15 characters
+        const baseUsername = faker.internet.username().slice(0, 8);
+        const timestamp = Date.now().toString().slice(-6); // Last 6 digits of timestamp
+
+        // Combine base username with timestamp and ensure it's within 15 chars
+        const uniqueUsername = `${baseUsername}_${timestamp}`;
+
+        // Truncate if longer than 15 characters
+        return uniqueUsername.length > 15 ? uniqueUsername.substring(0, 15) : uniqueUsername;
+    }
+
     static generateValidUserData(): UserData {
         const password = this.generateValidPassword();
         return {
-            username: faker.internet.username(),
+            username: this.generateUniqueUsername(),
             email: faker.internet.email(),
             password: password,
             confirmPassword: password
@@ -37,7 +49,7 @@ export class TestDataFactory {
         const password = this.generateValidPassword();
 
         return {
-            username: faker.internet.username(),
+            username: this.generateUniqueUsername(),
             email: faker.internet.email(),
             password: password,
             confirmPassword: password,
@@ -56,11 +68,11 @@ export class TestDataFactory {
         const password = this.generateValidPassword();
 
         // Australian-specific data
-        const australianStates = ['New South Wales', 'Victoria', 'Queensland', 'Western Australia', 'South Australia', 'Tasmania', 'Northern Territory', 'Australian Capital Territory'];
+        const australianStates = ['NSW', 'VIC', 'QLD', 'WA', 'SA', 'TAS', 'NT', 'ACT'];
         const australianCities = ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide', 'Gold Coast', 'Newcastle', 'Canberra'];
 
         return {
-            username: faker.internet.username(),
+            username: this.generateUniqueUsername(),
             email: faker.internet.email(),
             password: password,
             confirmPassword: password,
@@ -76,11 +88,6 @@ export class TestDataFactory {
     }
 
     static generateValidPassword(): string {
-        // Generate password that meets all requirements:
-        // - 4-12 characters
-        // - At least one lowercase letter
-        // - At least one uppercase letter  
-        // - At least one number
         const lowercase = faker.string.alpha({ length: 2, casing: 'lower' });
         const uppercase = faker.string.alpha({ length: 1, casing: 'upper' });
         const numbers = faker.string.numeric({ length: 2 });
@@ -107,7 +114,7 @@ export class TestDataFactory {
 
     static generateUserDataWithMismatchedPasswords(): UserData {
         return {
-            username: faker.internet.username(),
+            username: this.generateUniqueUsername(),
             email: faker.internet.email(),
             password: this.generateValidPassword(),
             confirmPassword: this.generateValidPassword() // Different password

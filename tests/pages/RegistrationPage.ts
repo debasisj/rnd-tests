@@ -19,6 +19,9 @@ export class RegistrationPage {
     readonly stateProvinceField: Locator;
     readonly postalCodeField: Locator;
 
+    // Terms and Conditions
+    readonly agreeToTermsCheckbox: Locator;
+
     readonly registerButton: Locator;
 
     // Error message locators
@@ -60,6 +63,9 @@ export class RegistrationPage {
         this.stateProvinceField = page.locator('input[name="state_/_province_/_regionRegisterPage"]');
         this.postalCodeField = page.locator('input[name="postal_codeRegisterPage"]');
 
+        // Terms and Conditions
+        this.agreeToTermsCheckbox = page.locator('[name="i_agree"]')
+
         this.registerButton = page.getByRole('button', { name: 'REGISTER' });
 
         // Error messages - make them more specific to avoid multiple matches
@@ -74,7 +80,7 @@ export class RegistrationPage {
 
         // Success/Login status elements
         this.userMenuLoggedIn = page.locator('#menuUserLink span');
-        this.logoutOption = page.getByText('Sign out');
+        this.logoutOption = page.getByRole('link', { name: 'Sign out' })
     }
 
     async navigate() {
@@ -139,6 +145,10 @@ export class RegistrationPage {
 
     async fillPostalCode(postalCode: string) {
         await this.postalCodeField.fill(postalCode);
+    }
+
+    async agreeToTerms() {
+        await this.agreeToTermsCheckbox.check();
     }
 
     // Complete registration method
@@ -246,6 +256,8 @@ export class RegistrationPage {
     }
 
     async isRegisterButtonEnabled(): Promise<boolean> {
+        await this.registerButton.waitFor({ state: 'visible' });
+        await this.registerButton.scrollIntoViewIfNeeded();
         return await this.registerButton.isEnabled();
     }
 
@@ -271,13 +283,12 @@ export class RegistrationPage {
         }
     }
 
-    async isLogoutOptionVisible(): Promise<boolean> {
+    async logOutButton(): Promise<Locator | null> {
         try {
             await this.userMenuIcon.click();
-            await this.page.waitForTimeout(500);
-            return await this.logoutOption.isVisible();
+            return this.logoutOption;
         } catch {
-            return false;
+            return null;
         }
     }
 
