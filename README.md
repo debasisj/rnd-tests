@@ -21,6 +21,8 @@ tests/
 - **Comprehensive Validation Testing**: Tests for all form field validations
 - **Error Message Verification**: Validates error messages appear and disappear correctly
 - **Cross-browser Testing**: Configured for Chromium, Firefox, and WebKit
+- **Environment Variable Browser Selection**: Dynamic browser configuration via BROWSER env var
+- **CI/CD Ready**: GitHub Actions workflow with optimized Chromium-only testing
 
 
 ## Installation & Setup
@@ -40,43 +42,45 @@ tests/
 ### Quick Commands (using npm scripts):
 
 ```bash
-# Run demo tests (works offline)
-npm run test:demo
 
-# Test website connectivity
-npm run test:connectivity
-
-# Run full registration tests
-npm run test:registration
-
-# Run tests with browser UI visible
-npm run test:headed
-
-# Run tests in debug mode
-npm run test:debug
-
-# Run tests only on Chromium
-npm run test:chromium
+# Run tests on specific browsers (using environment variables)
+npm run test:chromium    # BROWSER=chromium
+npm run test:firefox     # BROWSER=firefox  
+npm run test:webkit      # BROWSER=webkit
+npm run test:edge        # BROWSER=edge
+npm run test:all         # BROWSER=all (runs on all browsers)
 
 # View test report
 npm run test:report
 ```
 
+### Environment Variable Browser Selection:
+
+You can also set the browser dynamically using the `BROWSER` environment variable:
+
+```bash
+# Run tests on specific browsers
+BROWSER=firefox npm run test
+BROWSER=webkit npm run test
+BROWSER=edge npm run test
+BROWSER=all npm run test
+
+# Default behavior (chromium if not specified)
+npm run test
+```
+
+**Supported BROWSER values:**
+- `chromium` - Desktop Chrome (default)
+- `firefox` - Desktop Firefox
+- `webkit` - Desktop Safari
+- `edge` - Desktop Edge
+- `all` - Run tests on all browsers
+
 ### Detailed Commands:
 
-#### Run all tests:
-```bash
-npx playwright test registration.spec.ts
-```
-
-#### Run tests in headed mode (with browser UI):
-```bash
-npx playwright test registration.spec.ts --headed
-```
-
-#### Run tests on specific browser:
-```bash
-npx playwright test registration.spec.ts --project=chromium
+# Using environment variables (recommended)
+BROWSER=firefox npx playwright test registration.spec.ts
+BROWSER=webkit npx playwright test registration.spec.ts
 ```
 
 #### Run with debug mode:
@@ -101,6 +105,17 @@ The `TestDataFactory` class provides methods for generating test data:
 - `generateValidPassword()`: Creates password meeting all requirements
 - `generateInvalidUserData()`: Provides various invalid data scenarios
 - `generateUserDataWithMismatchedPasswords()`: Creates mismatched password scenario
+
+## CI/CD Integration
+
+### GitHub Actions
+This project includes a GitHub Actions workflow (`.github/workflows/playwright.yml`) that automatically runs tests on every push to main branch and pull requests.
+
+**Current Configuration:**
+- **Trigger**: Push to `main` branch or pull requests
+- **Browser**: Chromium only (optimized for faster CI/CD execution)
+- **Command**: `npm run test:chromium`
+
 
 ## Key Features of the Implementation
 
@@ -130,54 +145,3 @@ const userData = TestDataFactory.generateValidUserData();
 - Specific error message validation
 - Timeout handling for slow connections
 - Cross-browser compatibility considerations
-
-## Troubleshooting
-
-### Connection Issues
-If you encounter "Connection Refused" errors:
-1. Verify the website is accessible: https://www.advantageonlineshopping.com
-2. Check your internet connection
-3. Try running tests at a different time
-
-### Element Not Found Issues
-- The site may have updated its structure
-- Check browser developer tools for current element selectors
-- Update locators in `RegistrationPage.ts` if needed
-
-### Timing Issues
-- Increase timeouts in `playwright.config.ts` if needed
-- Add explicit waits for slow-loading elements
-- Use `--headed` mode to debug timing visually
-
-## Test Execution Report
-
-Run tests and view detailed reports:
-```bash
-npx playwright test registration.spec.ts
-npx playwright show-report
-```
-
-The HTML report provides:
-- Test execution timeline
-- Screenshots of failures
-- Detailed error logs
-- Performance metrics
-
-## Extending the Tests
-
-To add new test scenarios:
-
-1. Add new methods to `RegistrationPage.ts` for page interactions
-2. Create new test cases in `registration.spec.ts`
-3. Use `TestDataFactory` for generating appropriate test data
-4. Follow the existing pattern of step-by-step validation
-
-Example:
-```typescript
-test('should validate phone number format', async () => {
-  const invalidPhone = TestDataFactory.generateInvalidPhoneNumber();
-  await registrationPage.fillPhoneNumber(invalidPhone);
-  await registrationPage.clickOutsideForm();
-  await expect(registrationPage.phoneErrorMessage).toBeVisible();
-});
-```
