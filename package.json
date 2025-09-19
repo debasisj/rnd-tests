@@ -7,7 +7,11 @@
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
     "test:debug": "npx playwright test --debug",
-    "test:chromium": "npx playwright test --project=chromium",
+    "test:chromium": "BROWSER=chromium npx playwright test",
+    "test:firefox": "BROWSER=firefox npx playwright test",
+    "test:webkit": "BROWSER=webkit npx playwright test",
+    "test:edge": "BROWSER=edge npx playwright test",
+    "test:all": "BROWSER=all npx playwright test",
     "test:report": "npx playwright show-report",
     "install:browsers": "npx playwright install"
   },

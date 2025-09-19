@@ -8,6 +8,58 @@ import { defineConfig, devices } from '@playwright/test';
 // import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+// Get browser from environment variable (default to 'chromium')
+const browser = process.env.BROWSER || 'chromium';
+
+// Define browser configurations
+const browserConfigs = {
+  chromium: {
+    name: 'chromium',
+    use: { ...devices['Desktop Chrome'] },
+  },
+  firefox: {
+    name: 'firefox',
+    use: { ...devices['Desktop Firefox'] },
+  },
+  webkit: {
+    name: 'webkit',
+    use: { ...devices['Desktop Safari'] },
+  },
+  edge: {
+    name: 'msedge',
+    use: { ...devices['Desktop Edge'] },
+  },
+  all: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+  ],
+};
+
+// Function to get projects based on browser selection
+function getProjects() {
+  if (browser === 'all') {
+    return browserConfigs.all;
+  }
+
+  const selectedBrowser = browserConfigs[browser as keyof typeof browserConfigs];
+  if (!selectedBrowser) {
+    console.warn(`Browser '${browser}' not supported. Using chromium as default.`);
+    return [browserConfigs.chromium];
+  }
+
+  return Array.isArray(selectedBrowser) ? selectedBrowser : [selectedBrowser];
+}
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -38,20 +90,5 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
-  ],
+  projects: getProjects(),
 });
