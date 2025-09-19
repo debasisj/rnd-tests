@@ -51,9 +51,12 @@ function getProjects() {
     return browserConfigs.all;
   }
 
-  const selectedBrowser = browserConfigs[browser as keyof typeof browserConfigs];
+  const selectedBrowser =
+    browserConfigs[browser as keyof typeof browserConfigs];
   if (!selectedBrowser) {
-    console.warn(`Browser '${browser}' not supported. Using chromium as default.`);
+    console.warn(
+      `Browser '${browser}' not supported. Using chromium as default.`
+    );
     return [browserConfigs.chromium];
   }
 

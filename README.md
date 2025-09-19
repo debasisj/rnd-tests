@@ -24,10 +24,10 @@ tests/
 - **Environment Variable Browser Selection**: Dynamic browser configuration via BROWSER env var
 - **CI/CD Ready**: GitHub Actions workflow with optimized Chromium-only testing
 
-
 ## Installation & Setup
 
 1. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -45,7 +45,7 @@ tests/
 
 # Run tests on specific browsers (using environment variables)
 npm run test:chromium    # BROWSER=chromium
-npm run test:firefox     # BROWSER=firefox  
+npm run test:firefox     # BROWSER=firefox
 npm run test:webkit      # BROWSER=webkit
 npm run test:edge        # BROWSER=edge
 npm run test:all         # BROWSER=all (runs on all browsers)
@@ -70,16 +70,17 @@ npm run test
 ```
 
 **Supported BROWSER values:**
+
 - `chromium` - Desktop Chrome (default)
 - `firefox` - Desktop Firefox
 - `webkit` - Desktop Safari
 - `edge` - Desktop Edge
 - `all` - Run tests on all browsers
 
-
 ## Page Object Model Implementation
 
 ### RegistrationPage.ts
+
 The `RegistrationPage` class encapsulates all interactions with the registration form:
 
 - **Navigation methods**: Navigate to site, open login popup, click create account
@@ -88,6 +89,7 @@ The `RegistrationPage` class encapsulates all interactions with the registration
 - **State verification methods**: Check form completion, button states
 
 ### TestDataFactory.ts
+
 The `TestDataFactory` class provides methods for generating test data:
 
 - `generateValidUserData()`: Creates complete valid user data
@@ -98,39 +100,44 @@ The `TestDataFactory` class provides methods for generating test data:
 ## CI/CD Integration
 
 ### GitHub Actions
+
 This project includes a GitHub Actions workflow (`.github/workflows/playwright.yml`) that automatically runs tests on every push to main branch and pull requests.
 
 **Current Configuration:**
+
 - **Trigger**: Push to `main` branch or pull requests
 - **Browser**: Chromium only (optimized for faster CI/CD execution)
 - **Command**: `npm run test:chromium`
 
-
 ## Key Features of the Implementation
 
 ### Robust Locator Strategy
+
 - Uses specific selectors to avoid element conflicts
 - Scopes error message locators to specific containers
 - Handles dynamic content loading
 
 ### Wait Strategies
+
 - Waits for page navigation and network idle
 - Waits for specific elements to be visible
 - Includes timeout handling for unreliable connections
 
 ### Test Data Generation
+
 ```typescript
 // Example usage of faker.js integration
 const userData = TestDataFactory.generateValidUserData();
 // userData = {
 //   username: "john_doe123",
-//   email: "john.doe@example.com", 
+//   email: "john.doe@example.com",
 //   password: "Test123a",
 //   confirmPassword: "Test123a"
 // }
 ```
 
 ### Error Handling
+
 - Specific error message validation
 - Timeout handling for slow connections
 - Cross-browser compatibility considerations
