@@ -17,6 +17,9 @@ jobs:
         run: npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+      - name: Run ESLint (allow warnings)
+        run: npm run lint || true
+        continue-on-error: true
       - name: Run Playwright tests
         run: npm run test:chromium
       - uses: actions/upload-artifact@v4

@@ -23,6 +23,8 @@ tests/
 - **Cross-browser Testing**: Configured for Chromium, Firefox, and WebKit
 - **Environment Variable Browser Selection**: Dynamic browser configuration via BROWSER env var
 - **CI/CD Ready**: GitHub Actions workflow with optimized Chromium-only testing
+- **Code Formatting**: Prettier integration for consistent code style
+- **Code Quality**: ESLint integration with TypeScript support for code quality
 
 ## Installation & Setup
 
@@ -107,7 +109,15 @@ This project includes a GitHub Actions workflow (`.github/workflows/playwright.y
 
 - **Trigger**: Push to `main` branch or pull requests
 - **Browser**: Chromium only (optimized for faster CI/CD execution)
+- **Linting**: ESLint check with warnings allowed (non-blocking)
 - **Command**: `npm run test:chromium`
+
+**Workflow Benefits:**
+- ⚡ **Fast Execution**: Chromium-only testing reduces CI/CD time
+- 🔄 **Automatic Testing**: Runs on every code change
+- 🧹 **Code Quality**: ESLint checks without blocking pipeline
+- 📊 **Test Reports**: Detailed reports available as artifacts
+- 🛡️ **Quality Gate**: Prevents broken code from being merged
 
 ## Key Features of the Implementation
 
@@ -141,3 +151,30 @@ const userData = TestDataFactory.generateValidUserData();
 - Specific error message validation
 - Timeout handling for slow connections
 - Cross-browser compatibility considerations
+
+## Prettier 
+```
+npm run format        # Format all files
+npm run format:check  # Check formatting (CI/CD ready)
+npm run format:ts     # Format specific file types
+```
+
+## Code Quality & Linting
+
+This project uses [ESLint](https://eslint.org/) for code quality and linting with TypeScript support.
+
+### ESLint Commands:
+
+```bash
+# Lint all TypeScript files
+npm run lint
+
+# Lint and auto-fix issues
+npm run lint:fix
+
+# Check linting with zero warnings (CI/CD ready)
+npm run lint:check
+
+# Run both linting and formatting checks
+npm run validate
+```

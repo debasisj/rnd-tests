@@ -16,17 +16,27 @@
     "install:browsers": "npx playwright install",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "format:ts": "prettier --write \"**/*.{ts,js,json,md}\""
+    "format:ts": "prettier --write \"**/*.{ts,js,json,md}\"",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "lint:check": "eslint . --ext .ts --max-warnings 0",
+    "validate": "npm run lint:check && npm run format:check"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@eslint/js": "^9.36.0",
     "@faker-js/faker": "^10.0.0",
     "@playwright/test": "^1.55.0",
     "@types/node": "^24.5.1",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
     "dotenv": "^17.2.2",
-    "prettier": "^3.6.2"
+    "eslint": "^9.36.0",
+    "eslint-plugin-playwright": "^2.2.2",
+    "prettier": "^3.6.2",
+    "typescript-eslint": "^8.44.0"
   }
 }
