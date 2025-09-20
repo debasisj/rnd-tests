@@ -112,12 +112,6 @@ This project includes a GitHub Actions workflow (`.github/workflows/playwright.y
 - **Linting**: ESLint check with warnings allowed (non-blocking)
 - **Command**: `npm run test:chromium`
 
-**Workflow Benefits:**
-- ⚡ **Fast Execution**: Chromium-only testing reduces CI/CD time
-- 🔄 **Automatic Testing**: Runs on every code change
-- 🧹 **Code Quality**: ESLint checks without blocking pipeline
-- 📊 **Test Reports**: Detailed reports available as artifacts
-- 🛡️ **Quality Gate**: Prevents broken code from being merged
 
 ## Key Features of the Implementation
 
